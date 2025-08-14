@@ -1,5 +1,8 @@
 name: Deploy entire repo 
 
+exclude:
+  - README.md
+
 on:
   push:
     branches:

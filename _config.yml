@@ -1,0 +1,7 @@
+name: Deploy entire repo 
+
+on:
+  push:
+    branches:
+      - main
+

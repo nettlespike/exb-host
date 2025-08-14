@@ -5,6 +5,12 @@
   <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
   <title>Github Widget Repo Browser </title>
   <style>
+    .folder, .file {
+      cursor: pointer;
+    }
+    .folder::before{
+      content: "Folder:";
+    }
     ul {
       list-stype-type: none;
       padding-left: 20px;
@@ -13,7 +19,8 @@
 </head>
 
 <body>
-  <H1>Github Widget Repo</H1>
+  <h1>Github Widget Repo</h1>
+  <p>This is a test to see how fast changes show up</p>
   <div id = "breadcrumb"></div>
   <ul id = "file-list"></ul>
 
@@ -67,7 +74,7 @@
       const breadcrumb = document.getElementById('breadcrumb');
       const pathSegments = basePath ? basePath.split('/') : [];
       if (folderName) pathSegments.push(folderName);
-      breadcrumb.textcontent = pathSegments.join('/');
+      breadcrumb.textcontent = "folder: " + pathSegments.join('/');
     }
 
     //update URL

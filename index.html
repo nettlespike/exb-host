@@ -20,7 +20,8 @@
 
 <body>
     <h1>My GitHub Repo Browser</h1>
-    <p>This is a change</p>
+    <p>This is a change2</p>
+    <div id = test></div>
     <div id="breadcrumb"></div>
     <ul id="file-list"></ul>
 
@@ -80,6 +81,8 @@
         // Function to update URL
         function updateURL(path) {
             const newURL = `${window.location.origin}/${repo}/${path}`;
+            const testdiv = document.getElementById('test');
+            test.textContent = path + " " + newURL;
             history.pushState({ path }, '', newURL);
         }
 

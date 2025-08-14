@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+  <meta charset = "UTF-8">
+  <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+  <title>Github Widget Repo Browser </title>
+  <style>
+    ul {
+      list-stype-type: none;
+      padding-left: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <H1>Github Widget Repo</H1>
+  <div id = "breadcrumb"></div>
+  <ul id = "file-list"></ul>
+
+  <script>
+    const username = 'nettlespike';
+    const repo = 'nettlespike.github.io';
+
+    //Apparently this fetches content of a directory
+    async function fetchContents(path = ''){
+      const url = `https://api.github.com/repos/${username}/${repo}/contents/${path}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      return data
+    }
+
+    //This renders the files / folders?
+    async function renderContents(contents, path = ''){
+      const fileList = document.getElementById('file-list');
+      fileList.innerHTML = ''; 
+
+      contents.forEach(item => {
+        const listItem = document.createElement('li');
+        
+        if (item.type === 'dir'){
+          listItem.className = 'folder';
+          listItem.textContent = iten.name;
+          listItem.addEventListener('click', () => {
+            updateBreadcrumb(path, item.name);
+            loadDirectory(item.path);
+            updateURL(item.path);
+          })
+        }
+        else if (item.type === 'file'){
+          listItem.className = 'file';
+          const link = document.createElement('a');
+          link.href = `/${repo}/${item.path}`; 
+          link.textContent = item.name;
+          listItem.appendChild(link);
+        }
+        fileList.appendChild(listItem);
+      })
+    }
+
+    //loading a directory
+    async function loadDirectory(path=''){
+      const contents = await fetchContents(path);
+      renderContents(contents, path)
+    }
+    //update the breadcrumb 
+    async function updateBreadcrumb(basePath, folderName){
+      const breadcrumb = document.getElementById('breadcrumb');
+      const pathSegments = basePath ? basePath.split('/') : [];
+      if (folderName) pathSegments.push(folderName);
+      breadcrumb.textcontent = pathSegments.join('/');
+    }
+
+    //update URL
+    function updateURL(path){
+      const newURL = `${window.location.origin}/${repo}/${path}`;
+      history.pushSate({path}, '', newURL);
+    }
+
+    //handle initial load / URL changes?
+    function handleRoute() {
+      const currentPath = window.location.pathname.replace(`/${repo}/`, '');
+      if (currentPath && currentPath !== `/`) {
+        loadDirectory(currentPath);
+        updateBreadcrumb('', currentPath);
+      }
+      else {
+        loadDirectory();
+        updateBreadCrumb();
+      }
+    }
+
+    handleRoute(); 
+
+    //listen for URL changes
+    window.onpopstate = () => {
+      handleRoute();
+    };
+  </script>
+
+  
+</body>
+</html>
